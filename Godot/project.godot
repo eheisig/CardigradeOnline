@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Cardigrade Godot"
-run/main_scene="res://Card.tscn"
+run/main_scene="res://Board.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]

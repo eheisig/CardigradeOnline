@@ -8,6 +8,7 @@ var is_hovered: bool = false
 var default_scale := Vector2(1, 1)
 var hover_scale := Vector2(1.1, 1.1)
 var default_position := Vector2.ZERO
+var default_rotation := 0.0
 
 func _ready():
 	pivot_offset = size / 2
@@ -15,6 +16,7 @@ func _ready():
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
 	default_position = position
+	default_rotation = rotation
 	load_card_data()
 
 func load_card_data():
@@ -22,18 +24,15 @@ func load_card_data():
 	if card_data.is_empty():
 		return
 		
-	# Try to load custom graphic first
 	var art_path = card_data.get("art_path", "")
 	if art_path != "":
-		# Attempt to load texture
 		var tex = load(art_path)
 		if tex:
 			$ArtRect.texture = tex
 			$ArtRect.show()
-			$Background.hide() # Hide fallback HTML-style GUI
+			$Background.hide() 
 			return
 			
-	# Fallback if no full art is provided
 	$ArtRect.hide()
 	$Background.show()
 	if has_node("Background/VBox/Name"):
@@ -55,16 +54,24 @@ func _process(delta):
 		position = position.lerp(target_pos, 10 * delta)
 
 func _on_mouse_entered():
+	if is_hovered: return
 	is_hovered = true
-	z_index = 10 
+	z_index = 100 # Ensure it's above everything
+	
+	# Flatten the arc rotation so we can read it easily!
+	var tween = create_tween()
+	tween.tween_property(self, "rotation", 0.0, 0.15).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _on_mouse_exited():
+	if not is_hovered: return
 	is_hovered = false
-	z_index = 0
+	z_index = get_index() # Reverts generally
+	
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "scale", default_scale, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "position", default_position, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "rotation", default_rotation, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
