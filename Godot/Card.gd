@@ -126,3 +126,9 @@ func _on_play_btn_pressed():
 		is_inspecting = false
 		play_btn.hide()
 		play_requested.emit()
+
+func reject_play():
+	is_played = false
+	is_inspecting = false
+	_animate_back_to_hand()
+

@@ -4,56 +4,167 @@ class_name BoardManager
 const CARD_SCENE = preload("res://Card.tscn")
 @onready var hand_pivot = $HandPivot
 
-var hand_cards: Array[Node] = []
+var state = {
+	"player": {
+		"deck": [],
+		"hand": [], 
+		"field": [], 
+		"energy": 0,
+		"max_energy": 1,
+		"bonus_energy": 0
+	},
+	"opponent": {
+		"deck": [],
+		"hand": [],
+		"field": [],
+		"energy": 0,
+		"max_energy": 1,
+		"bonus_energy": 0
+	},
+	"turn": 1,
+	"active_p": 0 
+}
+
 var max_hand_width = 1400.0
 
 func _ready():
-	print("Board ready! Press SPACEBAR to spawn random cards into the hand!")
+	if has_node("UI/EndTurnBtn"): $UI/EndTurnBtn.pressed.connect(_on_end_turn_pressed)
+	start_game()
 
-func _input(event):
-	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
-		spawn_random_card()
+func start_game():
+	state.player.deck = _generate_deck()
+	state.player.deck.shuffle()
+	state.opponent.deck = _generate_deck()
+	state.turn = 1
+	state.active_p = 0
+	
+	# Initial deal
+	draw_cards(0, 3)
+	start_turn()
 
-func spawn_random_card():
-	# FILTER: only spawn cards that have beautiful art!
+func _generate_deck() -> Array:
+	var deck = []
 	var valid_keys = []
 	for card in CardDatabase.CARDS:
 		if card.get("art_path", "") != "":
 			valid_keys.append(card.id)
 			
-	if valid_keys.size() == 0:
-		print("No cards with art found!")
-		return
-		
-	var random_id = valid_keys[randi() % valid_keys.size()]
+	for i in range(10): # Simulate a 10 deck
+		if valid_keys.size() > 0:
+			deck.append(valid_keys[randi() % valid_keys.size()])
+	return deck
+
+func draw_cards(p_idx: int, count: int):
+	var p = state.player if p_idx == 0 else state.opponent
+	for i in range(count):
+		if p.deck.size() > 0:
+			var id = p.deck.pop_back()
+			if p_idx == 0:
+				_spawn_visual_card_in_hand(id)
+
+func start_turn():
+	var p = state.player if state.active_p == 0 else state.opponent
 	
+	# Refill Energy (caps at 4 usually based on turn number in original game)
+	var base = min(4, state.turn)
+	p.max_energy = base
+	p.energy = base + p.bonus_energy
+	if state.active_p == 0:
+		p.bonus_energy = 0 # reset
+	
+	draw_cards(state.active_p, 1)
+	update_ui()
+
+func _on_end_turn_pressed():
+	if state.active_p != 0: return
+	
+	# End player turn, immediately sim opponent turn for now
+	state.active_p = 1
+	start_turn()
+	print("Opponent Turn Simulated")
+	
+	await get_tree().create_timer(1.0).timeout
+	state.active_p = 0
+	state.turn += 1
+	start_turn()
+
+func _spawn_visual_card_in_hand(id: String):
 	var card = CARD_SCENE.instantiate()
-	card.card_id = random_id
-	
-	# Connect our new specific play signal!
+	card.card_id = id
 	card.play_requested.connect(_on_card_played.bind(card))
 	
 	hand_pivot.add_child(card)
-	hand_cards.append(card)
+	state.player.hand.append(card)
 	
-	# Initial spawn off screen
-	card.position = Vector2(800, 400)
+	card.position = Vector2(800, 1000)
 	card.scale = Vector2(0.1, 0.1)
 	
-	update_hand_layout()
+	update_layout()
 
 func _on_card_played(card: Node):
-	if card in hand_cards:
-		hand_cards.erase(card)
+	if state.active_p != 0: 
+		card.reject_play()
+		return
+		
+	# Validate Cost
+	var cost = card.card_data.get("cost", 0)
+	if state.player.energy < cost:
+		print("Not enough energy!")
+		card.reject_play()
+		return
+		
+	if state.player.field.size() >= 5:
+		print("Field is full!")
+		card.reject_play()
+		return
+
+	# Succeed!
+	state.player.energy -= cost
+	if card in state.player.hand:
+		state.player.hand.erase(card)
+	
+	state.player.field.append(card)
 	card.is_played = true
-	# Snap the played card onto the table
+	
+	# Snap the played card into position
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(card, "rotation", 0.0, 0.2)
-	tween.tween_property(card, "scale", Vector2(1,1), 0.2)
-	update_hand_layout()
+	tween.tween_property(card, "scale", Vector2(0.6, 0.6), 0.2) # scale down for board
+	tween.tween_property(card, "z_index", 10, 0.1)
+	
+	update_ui()
+	update_layout()
 
-func update_hand_layout():
-	var card_count = hand_cards.size()
+func update_ui():
+	if has_node("UI/PlayerEnergy"):
+		$UI/PlayerEnergy.text = "Energy: " + str(state.player.energy) + " / " + str(state.player.max_energy)
+
+func update_layout():
+	_layout_hand()
+	_layout_field()
+
+func _layout_field():
+	var count = state.player.field.size()
+	if count == 0: return
+	
+	var spacing = 260.0
+	var total_w = (count - 1) * spacing
+	var start_x = -(total_w / 2.0)
+	
+	for i in range(count):
+		var card = state.player.field[i]
+		var target = Vector2(start_x + (i * spacing), -500.0) # Up on the field
+		
+		# Let card store position just in case
+		card.default_position = target
+		card.default_rotation = 0.0
+		
+		var tween = create_tween().set_parallel(true)
+		tween.tween_property(card, "position", target, 0.3).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+
+func _layout_hand():
+	var hand = state.player.hand
+	var card_count = hand.size()
 	if card_count == 0: return
 	
 	var base_spacing = 150.0
@@ -67,13 +178,9 @@ func update_hand_layout():
 	var start_x = -(requested_width / 2.0)
 	
 	for i in range(card_count):
-		var card = hand_cards[i]
-		if card.is_played: continue # Ignore played cards
-		
-		# X displacement
+		var card = hand[i]
 		var target_x = start_x + (i * current_spacing)
 		
-		# Arc tracking
 		var center_dist = 0.0
 		if card_count > 1:
 			center_dist = (float(i) / float(card_count - 1)) * 2.0 - 1.0
@@ -83,7 +190,6 @@ func update_hand_layout():
 		
 		card.default_position = Vector2(target_x, curve_drop)
 		card.default_rotation = deg_to_rad(rot_deg)
-		
 		card.z_index = i
 		
 		if not card.is_inspecting:
