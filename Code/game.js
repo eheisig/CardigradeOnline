@@ -859,3 +859,40 @@ function startGame() {
   render();
   showPassScreen();
 }
+
+// ===== 3D TILT EFFECT =====
+document.addEventListener('pointermove', (e) => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left; 
+  const y = e.clientY - rect.top;
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  
+  // Max rotation 15 degrees
+  const rotateX = ((y - centerY) / centerY) * -15; 
+  const rotateY = ((x - centerX) / centerX) * 15;
+
+  card.classList.add('tilting');
+  card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+  
+  // Update glare position
+  const glareX = (x / rect.width) * 100;
+  const glareY = (y / rect.height) * 100;
+  card.style.setProperty('--glare-x', `${glareX}%`);
+  card.style.setProperty('--glare-y', `${glareY}%`);
+});
+
+document.addEventListener('pointerout', (e) => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  // ensure we actually left the card
+  if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+
+  card.classList.remove('tilting');
+  card.style.transform = ''; // resets to CSS default
+  card.style.setProperty('--glare-x', '50%');
+  card.style.setProperty('--glare-y', '50%');
+});
