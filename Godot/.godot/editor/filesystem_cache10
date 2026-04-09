@@ -1,0 +1,24 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1775700464
+Card.gd::GDScript::567692529789023181::1775700527::0::1::::CardUI<>Control<><>0<>0<><>::
+Card.tscn::PackedScene::-1::1775700525::0::1::::<><><>0<>0<><>::res://Card.gd
+CardDatabase.gd::GDScript::561374930189112922::1775700519::0::1::::<>Node<><>0<>0<><>::
+::res://Art/::1775700466
+Artigrade.png::CompressedTexture2D::7274384417226611589::1775700464::1775700562::1::::<><><>0<>0<>177d33870ea5581e16b7416ecc7de315<>res://.godot/imported/Artigrade.png-9c847b089c043f75107868dc403e0b8a.ctex::
+Astrograde.png::CompressedTexture2D::4078494051473130114::1775700466::1775700562::1::::<><><>0<>0<>e2d68a9f2605c5c82d23f4803474fe25<>res://.godot/imported/Astrograde.png-6682d728d93ba47f5ae4edef31021aaa.ctex::
+Cardigrade Back.png::CompressedTexture2D::6037487808578365649::1775700466::1775700563::1::::<><><>0<>0<>c40a561833f425af3746a5a320910188<>res://.godot/imported/Cardigrade Back.png-667ba669ef668b652ad3abcfa367357c.ctex::
+Cardigrade Faux Logo.png::CompressedTexture2D::9019492573579542130::1775700466::1775700563::1::::<><><>0<>0<>b968602edd33a0838874b3e5f7418118<>res://.godot/imported/Cardigrade Faux Logo.png-355716cb50cdd7c5966d05072864a8a4.ctex::
+Cargograde.png::CompressedTexture2D::843764370259019967::1775700464::1775700562::1::::<><><>0<>0<>da78d66cdbe8351ce4670523be640207<>res://.godot/imported/Cargograde.png-ffe6c91bea38ec869da83f0e73db782e.ctex::
+Crudegrade.png::CompressedTexture2D::5781812363227794552::1775700464::1775700562::1::::<><><>0<>0<>20fade6e43da65792e39e5efe8df6fe7<>res://.godot/imported/Crudegrade.png-6e1de275165f700c661104cd19d20ac2.ctex::
+Dr_Beach.png::CompressedTexture2D::6874963789004213754::1775700464::1775700562::1::::<><><>0<>0<>6464e00c0784e35b715c01a2ddaf8ec9<>res://.godot/imported/Dr_Beach.png-3b65b50466aece94908e6c13d124e7e2.ctex::
+Dr_St_Clair.png::CompressedTexture2D::3087342776061410804::1775700464::1775700562::1::::<><><>0<>0<>d0377c8483b7cb06aac9fead404ecfed<>res://.godot/imported/Dr_St_Clair.png-36f7ab1072dbecd71ca9b200270a7bc9.ctex::
+Exocosmic_Regolith.png::CompressedTexture2D::7540318360158653021::1775700465::1775700562::1::::<><><>0<>0<>14fe06c7e162f9d8fc4969c3e9b4c76e<>res://.godot/imported/Exocosmic_Regolith.png-3233b033ca1a672dbc22d2eeb2562541.ctex::
+E_Coli.png::CompressedTexture2D::552804526278834088::1775700464::1775700562::1::::<><><>0<>0<>60d227fafc6e4a812840b2248f9a1b87<>res://.godot/imported/E_Coli.png-be57d0363ef4feffb641bb1f1dcb5fe4.ctex::
+Gaurdigrade.png::CompressedTexture2D::2466549312615622889::1775700465::1775700562::1::::<><><>0<>0<>d1b73fcf738b4dc172a144a9417f594f<>res://.godot/imported/Gaurdigrade.png-abc49294edae0e05aa51fed886c9fd10.ctex::
+Hypnosporum.png::CompressedTexture2D::1871370168130767348::1775700465::1775700562::1::::<><><>0<>0<>fc8b663dcefa1fc54b828e7181ce98d8<>res://.godot/imported/Hypnosporum.png-5a73bfdbeef23e065cf24e3c06bd83d6.ctex::
+Martyrgrade.png::CompressedTexture2D::1834854505477270156::1775700465::1775700562::1::::<><><>0<>0<>41f716d5869e0ba4b5f5c19a9ad11ae8<>res://.godot/imported/Martyrgrade.png-932308ec7d6d44b21cd7e5e462e74e75.ctex::
+Megatarium.png::CompressedTexture2D::8904163560484890906::1775700465::1775700562::1::::<><><>0<>0<>ff231b7cd0781add0ff21d1193fcd6ad<>res://.godot/imported/Megatarium.png-4a7070cda8ac3b5471c73bddef212925.ctex::
+Tardifate.png::CompressedTexture2D::2022992667493176358::1775700465::1775700562::1::::<><><>0<>0<>e013fce234825bee2ee11cb7039c3ecf<>res://.godot/imported/Tardifate.png-ea4d17154894873e38e20710f0b2a7f4.ctex::
+Tardigiant.png::CompressedTexture2D::3823556626226049351::1775700465::1775700562::1::::<><><>0<>0<>be8aad7e85e8e65ca72c3a3ed81c6618<>res://.godot/imported/Tardigiant.png-23d0b06a4e2806ee1fcc236f68ece0f8.ctex::
+Tarditrade.png::CompressedTexture2D::6198368290231308885::1775700465::1775700562::1::::<><><>0<>0<>b82bea4298460cf1bab85700861e47ce<>res://.godot/imported/Tarditrade.png-8d27bb75d258974aff869a2dda65857e.ctex::
+Yung_Grady.png::CompressedTexture2D::6413458998881966012::1775700466::1775700562::1::::<><><>0<>0<>93d7685a8cda4344819fdf5cb8b9a7b2<>res://.godot/imported/Yung_Grady.png-5478660a9a91e379dc6d8944e935b018.ctex::
