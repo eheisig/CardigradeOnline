@@ -15,14 +15,23 @@ func _input(event):
 		spawn_random_card()
 
 func spawn_random_card():
-	var keys = []
+	# FILTER: only spawn cards that have beautiful art!
+	var valid_keys = []
 	for card in CardDatabase.CARDS:
-		keys.append(card.id)
+		if card.get("art_path", "") != "":
+			valid_keys.append(card.id)
+			
+	if valid_keys.size() == 0:
+		print("No cards with art found!")
+		return
 		
-	var random_id = keys[randi() % keys.size()]
+	var random_id = valid_keys[randi() % valid_keys.size()]
 	
 	var card = CARD_SCENE.instantiate()
 	card.card_id = random_id
+	
+	# Connect our new specific play signal!
+	card.play_requested.connect(_on_card_played.bind(card))
 	
 	hand_pivot.add_child(card)
 	hand_cards.append(card)
@@ -31,6 +40,16 @@ func spawn_random_card():
 	card.position = Vector2(800, 400)
 	card.scale = Vector2(0.1, 0.1)
 	
+	update_hand_layout()
+
+func _on_card_played(card: Node):
+	if card in hand_cards:
+		hand_cards.erase(card)
+	card.is_played = true
+	# Snap the played card onto the table
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(card, "rotation", 0.0, 0.2)
+	tween.tween_property(card, "scale", Vector2(1,1), 0.2)
 	update_hand_layout()
 
 func update_hand_layout():
@@ -49,6 +68,7 @@ func update_hand_layout():
 	
 	for i in range(card_count):
 		var card = hand_cards[i]
+		if card.is_played: continue # Ignore played cards
 		
 		# X displacement
 		var target_x = start_x + (i * current_spacing)
@@ -66,7 +86,8 @@ func update_hand_layout():
 		
 		card.z_index = i
 		
-		var tween = create_tween().set_parallel(true)
-		tween.tween_property(card, "position", card.default_position, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		tween.tween_property(card, "rotation", card.default_rotation, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		tween.tween_property(card, "scale", Vector2(1,1), 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if not card.is_dragging and not card.is_inspecting:
+			var tween = create_tween().set_parallel(true)
+			tween.tween_property(card, "position", card.default_position, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.tween_property(card, "rotation", card.default_rotation, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.tween_property(card, "scale", Vector2(1,1), 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
