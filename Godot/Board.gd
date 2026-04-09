@@ -5,7 +5,7 @@ const CARD_SCENE = preload("res://Card.tscn")
 @onready var hand_pivot = $HandPivot
 
 var hand_cards: Array[Node] = []
-var max_hand_width = 800.0
+var max_hand_width = 1400.0
 
 func _ready():
 	print("Board ready! Press SPACEBAR to spawn random cards into the hand!")
