@@ -1,0 +1,83 @@
+RULES
+Cardigrades can be played with a deck of 10 or more cards.
+
+At the start of the game, players draw 3 cards and place them face down (called Block cards), and then draw 3 cards to start their hand. When a Cardigrade with at least 1 power attacks the opposing player, they flip a block card and use the BLOCK effect on the card. You win if you attack the other player when they have no block cards.
+
+Cardigrades cost energy to play, and can also be played face down in your BLOCK section.
+Flip a coin once BLOCK cards are played and each player has drawn to decide who goes first.
+Every turn start, players gain 1 energy and draw a card. At the start of turn 2, each player gains 2 energy, up to a maximum of 4 each turn. Card effects that gain energy can increase this maximum. On turn 1, a player cannot use a Cardigrade to attack. Otherwise, Cardigrades on your board can be used to attack. You cannot attack the other players if they have active Cardigrades, so clear a path first!
+
+FAQ: Cards don’t trigger the play effect when stolen.
+When a Cardigrade attacks another Cardigrade, they damage each other equal to their power, losing health. If their health is 0 or less, discard the Cardigrade. Damage should be tracked!
+
+Rare Card
+(Highest Priority)
+Done
+Priority Card
+135 cards
+(48 dollars)
+
+
+105 cards dedicated to packs (7 of each non-Gravy topic)
+
+Astrograde
+To the Moon: Play: next turn, gain an extra
+Dr. Beach
+Starship Navigator: You can spend     to add +1/+1 to an active Cardigrade.
+3
+2
+Block: Summon me with no cost
+Guardigrade
+Shield of Faith: Play: draw 2 cards and add them to your BLOCK cards.
+5
+3
+Block: Shuffle me back into the deck and draw a card. Add it to BLOCK cards for free.
+Block: Add me to your hand.
+Hypnosporum
+The Feast: Pick an enemy Cardigrade that has 4 or less health. It switches to your side. Discard me after I am played.
+Block: Play me with no cost.
+Dr. St Clair
+Terraforming: You can freely discard one Cardigrade on your turn. If it has at least 4 power or health, the enemy must consume a BLOCK card.
+Block: Add me to your hand.
+Quinn’s Note: A Paladin Tardigrade with a shield and sword!
+Quinn’s Note: Dr. Beach at the helm of a Spacecraft, looking out at Tardigrades floating in space
+Quinn’s Note: Dr. St Clair with a journal, noting the forming Martian Tardigrade army from the regolith card.
+
+Tardigiant
+HUGE: Just a big guy :)
+5
+5
+Block: I count as two BLOCK cards (must be attacked twice)
+Artigrade
+Water Paints: Gain     equal to the power of all Cardigrades on your field. 
+3
+2
+Block: Draw 3 and shuffle me back into your deck.
+Martyrgrade
+The Large Leap for Grade Kind: When I am discarded, draw 2 and gain             .
+2
+4
+Block: Gain 
+Tardifate
+Cunning: I remove BLOCK cards equal to my power when I hit BLOCK.
+1
+0
+Block: Play me for free.
+Crudegrade
+Muddle: Play: set the stats of another Cardigrade 2/2.
+2
+1
+Block: Set the stats of a friendly Cardigrade to 4/4.
+Cargograde
+Caboose: Once per turn: You can check your BLOCK cards and freely swap any cards in hand for them (without spending). When I die, shuffle me into your deck.
+5
+0
+Block: Add me to your hand.
+Exocosmic Regolith
+Restore Nitrogen: Passive: ll Cardigrades on your side have at least 4 power.
+Block: Give a Tardigrade +4/+0
+Yung Grady
+Mr Clean: Normal attacks don’t bother Yung Grady. He cannot be discarded or dropped below 1 health. The other player can attack you if Yung Grady is the only card on your field and has 1 health.
+4
+5
+Block: Yung Grady summons himself!

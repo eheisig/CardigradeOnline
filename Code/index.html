@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardigrades — The Card Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SETUP -->
+<div id="setup">
+  <div class="logo">
+    <h1>CARDIGRADES</h1>
+    <p>A TARDIGRADE TRADING CARD GAME</p>
+  </div>
+  <div class="setup-form">
+    <label>Player 1 Name</label>
+    <input id="p1Name" value="Player 1" />
+    <label>Player 2 Name</label>
+    <input id="p2Name" value="Player 2" />
+  </div>
+  <div class="rules-box">
+    <h3>HOW TO PLAY</h3>
+    Draw 3 BLOCK cards + 3 hand cards. Flip a coin for first player. Each turn: gain energy &amp; draw a card. Play Cardigrades to your field. Attack enemy Cardigrades to clear the path, then attack the player directly — they flip a BLOCK card. <strong>Win by attacking when they have no BLOCK cards left!</strong>
+  </div>
+  <button class="btn" onclick="startGame()">⚡ BEGIN ⚡</button>
+</div>
+
+<!-- PASS SCREEN -->
+<div id="passScreen">
+  <h2 id="passTitle">PASS THE DEVICE</h2>
+  <p id="passSubtitle">Hand it to the next player</p>
+  <button class="btn btn-gold" onclick="revealGame()">I'M READY ▶</button>
+</div>
+
+<!-- GAME -->
+<div id="game">
+  <div class="game-header">
+    <span class="turn-info" id="turnInfo">TURN 1</span>
+    <span class="phase-info" id="phaseInfo">—</span>
+    <div style="display:flex;gap:0.5rem;">
+      <button class="btn btn-small" id="cancelBtn" onclick="cancelAction()">✕ CANCEL</button>
+      <button class="btn btn-small btn-red" id="attackBtn" onclick="enterAttackMode()">⚔ ATTACK</button>
+      <button class="btn btn-small btn-gold" id="endTurnBtn" onclick="endTurn()">END TURN ▶</button>
+    </div>
+  </div>
+
+  <div class="board">
+    <!-- OPPONENT ZONE -->
+    <div class="player-zone opponent" id="oppZone">
+      <div class="zone-header">
+        <span class="player-name opp" id="oppName">Player 2</span>
+        <div class="energy-display" id="oppEnergy"></div>
+        <div class="block-count" id="oppBlocks">🔵 0 BLOCKS</div>
+        <div class="deck-count" id="oppDeck">📚 0</div>
+      </div>
+      <div class="zone-rows">
+        <div class="card-row opp-hand-row" id="oppHand"></div>
+        <div class="card-row" id="oppField">
+          <span class="empty-slot" id="oppFieldEmpty" style="display:none">EMPTY FIELD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MID -->
+    <div class="mid-zone">
+      <div class="log-panel" id="logPanel"></div>
+      <div class="controls-panel">
+        <div id="actionHint">Select a card to play or attack</div>
+      </div>
+    </div>
+
+    <!-- ACTIVE PLAYER ZONE -->
+    <div class="player-zone active-player" id="activeZone">
+      <div class="zone-header">
+        <span class="player-name" id="activeName">Player 1</span>
+        <div class="energy-display" id="activeEnergy"></div>
+        <div class="block-count" id="activeBlocks">🔵 0 BLOCKS</div>
+        <div class="deck-count" id="activeDeck">📚 0</div>
+      </div>
+      <div class="zone-rows">
+        <div class="card-row" id="activeField">
+          <span class="empty-slot" id="activeFieldEmpty" style="display:none">DROP CARDS HERE</span>
+        </div>
+        <div class="card-row" id="activeHand"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameOver">
+  <h2 id="winnerText">PLAYER 1 WINS!</h2>
+  <p id="winnerSub" style="color:var(--text2);font-size:0.9rem;letter-spacing:2px;"></p>
+  <button class="btn btn-gold" onclick="location.reload()">PLAY AGAIN</button>
+</div>
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle">Choose</h3>
+    <p id="modalDesc"></p>
+    <div class="modal-options" id="modalOptions"></div>
+    <button class="btn btn-small" onclick="closeModal()" style="margin-top:0.5rem;">Cancel</button>
+  </div>
+</div>
+
+<!-- Card Detail -->
+<div class="card-detail" id="cardDetail" style="display:none;">
+  <h4 id="cdName"></h4>
+  <div class="ability" id="cdAbilityName"></div>
+  <div class="text" id="cdText"></div>
+  <div class="block-label">BLOCK:</div>
+  <div class="block-text" id="cdBlock"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+
+  <script src="cards.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
