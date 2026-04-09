@@ -1,9 +1,12 @@
-63f7b34db8d8cdea90c76aacccf841ec
-::res://::1775700464
-Card.gd::GDScript::567692529789023181::1775700527::0::1::::CardUI<>Control<><>0<>0<><>::
-Card.tscn::PackedScene::-1::1775700525::0::1::::<><><>0<>0<><>::res://Card.gd
+72322a848ab928aa5c89f0cb78209805
+::res://::1775706038
+Board.gd::GDScript::6198059075834838704::1775701958::0::1::::BoardManager<>Node<><>0<>0<><>::
+Board.tscn::PackedScene::-1::1775701913::0::1::::<><><>0<>0<><>::res://Board.gd
+Card.gd::GDScript::567692529789023181::1775701840::0::1::::CardUI<>Control<><>0<>0<><>::
+Card.tscn::PackedScene::-1::1775702260::0::1::::<><><>0<>0<><>::res://Card.gd
 CardDatabase.gd::GDScript::561374930189112922::1775700519::0::1::::<>Node<><>0<>0<><>::
-::res://Art/::1775700466
+export_presets.cfg::TextFile::-1::1775705531::0::1::::<><><>0<>0<><>::
+::res://Art/::1775700563
 Artigrade.png::CompressedTexture2D::7274384417226611589::1775700464::1775700562::1::::<><><>0<>0<>177d33870ea5581e16b7416ecc7de315<>res://.godot/imported/Artigrade.png-9c847b089c043f75107868dc403e0b8a.ctex::
 Astrograde.png::CompressedTexture2D::4078494051473130114::1775700466::1775700562::1::::<><><>0<>0<>e2d68a9f2605c5c82d23f4803474fe25<>res://.godot/imported/Astrograde.png-6682d728d93ba47f5ae4edef31021aaa.ctex::
 Cardigrade Back.png::CompressedTexture2D::6037487808578365649::1775700466::1775700563::1::::<><><>0<>0<>c40a561833f425af3746a5a320910188<>res://.godot/imported/Cardigrade Back.png-667ba669ef668b652ad3abcfa367357c.ctex::
