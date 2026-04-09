@@ -86,7 +86,7 @@ func update_hand_layout():
 		
 		card.z_index = i
 		
-		if not card.is_dragging and not card.is_inspecting:
+		if not card.is_inspecting:
 			var tween = create_tween().set_parallel(true)
 			tween.tween_property(card, "position", card.default_position, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 			tween.tween_property(card, "rotation", card.default_rotation, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)

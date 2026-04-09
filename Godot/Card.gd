@@ -83,6 +83,12 @@ func _on_gui_input(event):
 			is_inspecting = false
 			_animate_back_to_hand()
 		elif not is_played:
+			if get_parent():
+				for sibling in get_parent().get_children():
+					if sibling is CardUI and sibling != self and sibling.is_inspecting:
+						sibling.is_inspecting = false
+						sibling._animate_back_to_hand()
+			
 			is_inspecting = true
 			_animate_to_inspect()
 
