@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+
+# Godot-specific ignores
+.godot/
+*.import
+export.cfg
+export_presets.cfg.backup
+
+# Godot android/ios build artifacts
+android/
+ios/
+
+# JavaScript/Web ignores
+node_modules/
+dist/
+.env
+
+# Build artifacts
+*/Export/*
+Export/
