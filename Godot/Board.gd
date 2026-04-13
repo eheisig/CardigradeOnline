@@ -26,6 +26,7 @@ var state = {
 }
 
 var max_hand_width = 1400.0
+var targeting_card: Node = null
 
 func _ready():
 	if has_node("UI/EndTurnBtn"): $UI/EndTurnBtn.pressed.connect(_on_end_turn_pressed)
@@ -40,6 +41,15 @@ func start_game():
 	
 	# Initial deal
 	draw_cards(0, 3)
+	
+	var dummy = CARD_SCENE.instantiate()
+	dummy.card_id = "guardigrade"
+	dummy.is_played = true
+	add_child(dummy)
+	state.opponent.field.append(dummy)
+	dummy.scale = Vector2(0.6, 0.6)
+	dummy.position = Vector2(700, 200)
+	
 	start_turn()
 
 func _generate_deck() -> Array:
@@ -92,6 +102,7 @@ func _spawn_visual_card_in_hand(id: String):
 	var card = CARD_SCENE.instantiate()
 	card.card_id = id
 	card.play_requested.connect(_on_card_played.bind(card))
+	card.attack_started.connect(_on_card_attack_started.bind(card))
 	
 	hand_pivot.add_child(card)
 	state.player.hand.append(card)
@@ -197,3 +208,61 @@ func _layout_hand():
 			tween.tween_property(card, "position", card.default_position, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 			tween.tween_property(card, "rotation", card.default_rotation, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 			tween.tween_property(card, "scale", Vector2(1,1), 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func _on_card_attack_started(card: Node):
+	if state.active_p != 0: return
+	targeting_card = card
+	if has_node("TargetArrow"): $TargetArrow.show()
+
+func _process(delta):
+	if targeting_card and has_node("TargetArrow"):
+		var start = targeting_card.global_position + ((targeting_card.size * targeting_card.scale) / 2.0)
+		$TargetArrow.points = PackedVector2Array([start, get_local_mouse_position()])
+
+func _input(event):
+	if targeting_card:
+		if event is InputEventMouseButton and not event.pressed and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+			_resolve_attack(event.global_position)
+			targeting_card = null
+			if has_node("TargetArrow"): $TargetArrow.hide()
+
+func _resolve_attack(pos: Vector2):
+	var hit_card = null
+	for o_card in state.opponent.field:
+		if o_card.get_global_rect().has_point(pos):
+			hit_card = o_card
+			break
+			
+	if hit_card:
+		print("CLASH! ", targeting_card.card_data.name, " attacks ", hit_card.card_data.name)
+		
+		var ap = targeting_card.card_data.power
+		var op = hit_card.card_data.power
+		
+		targeting_card.card_data.health -= op
+		hit_card.card_data.health -= ap
+		
+		targeting_card.load_card_data()
+		hit_card.load_card_data()
+		
+		if "exhausted" in targeting_card.card_data:
+			targeting_card.card_data.exhausted = true
+		
+		if targeting_card.card_data.health <= 0:
+			state.player.field.erase(targeting_card)
+			targeting_card.queue_free()
+		
+		if hit_card.card_data.health <= 0:
+			state.opponent.field.erase(hit_card)
+			hit_card.queue_free()
+			
+		update_layout()
+		
+	elif has_node("UI/OpponentBlock") and $UI/OpponentBlock.get_global_rect().has_point(pos):
+		print("DIRECT ATTACK TO OPPONENT BLOCK!")
+		# TODO: remove UI block
+		if "exhausted" in targeting_card.card_data:
+			targeting_card.card_data.exhausted = true
+	else:
+		print("Attack cancelled.")
+

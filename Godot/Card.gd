@@ -2,6 +2,7 @@ extends Control
 class_name CardUI
 
 signal play_requested()
+signal attack_started()
 
 @export var card_id: String = "astrograde"
 var card_data: Dictionary = {}
@@ -73,13 +74,15 @@ func _on_mouse_entered():
 	tween.tween_property(self, "rotation", 0.0, 0.15).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _on_mouse_exited():
-	if not is_hovered or is_inspecting: return
+	if is_played or not is_hovered or is_inspecting: return
 	is_hovered = false
 	_animate_back_to_hand()
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed:
-		if is_inspecting:
+		if is_played:
+			attack_started.emit()
+		elif is_inspecting:
 			is_inspecting = false
 			_animate_back_to_hand()
 		elif not is_played:
