@@ -1,4 +1,4 @@
-extends Node
+extends Control
 class_name BoardManager
 
 const CARD_SCENE = preload("res://Card.tscn")
@@ -214,7 +214,7 @@ func _on_card_attack_started(card: Node):
 	targeting_card = card
 	if has_node("TargetArrow"): $TargetArrow.show()
 
-func _process(delta):
+func _process(_delta):
 	if targeting_card and has_node("TargetArrow"):
 		var start = targeting_card.global_position + ((targeting_card.size * targeting_card.scale) / 2.0)
 		$TargetArrow.points = PackedVector2Array([start, get_local_mouse_position()])
@@ -265,4 +265,3 @@ func _resolve_attack(pos: Vector2):
 			targeting_card.card_data.exhausted = true
 	else:
 		print("Attack cancelled.")
-
