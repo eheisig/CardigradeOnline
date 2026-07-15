@@ -80,6 +80,7 @@ func _on_mouse_exited():
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed:
+		print("[DEV] Card %s clicked! is_played: %s | is_inspecting: %s" % [card_id, is_played, is_inspecting])
 		if is_played:
 			attack_started.emit()
 		elif is_inspecting:
@@ -125,6 +126,7 @@ func _animate_to_inspect():
 	tween.tween_property(play_btn, "modulate:a", 1.0, 0.2).set_delay(0.1)
 	
 func _on_play_btn_pressed():
+	print("[DEV] Play Button clicked for %s!" % card_id)
 	if is_inspecting and not is_played:
 		is_inspecting = false
 		play_btn.hide()

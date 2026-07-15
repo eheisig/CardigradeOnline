@@ -73,6 +73,7 @@ func draw_cards(p_idx: int, count: int):
 				_spawn_visual_card_in_hand(id)
 
 func start_turn():
+	print("[DEV] === TURN %s STARTED (Active Player: %s) ===" % [state.turn, state.active_p])
 	var p = state.player if state.active_p == 0 else state.opponent
 	
 	# Refill Energy (caps at 4 usually based on turn number in original game)
@@ -113,23 +114,27 @@ func _spawn_visual_card_in_hand(id: String):
 	update_layout()
 
 func _on_card_played(card: Node):
+	print("[DEV] Play request received for %s" % card.card_id)
 	if state.active_p != 0: 
+		print("[DEV] Rejecting play: Not player's turn!")
 		card.reject_play()
 		return
 		
 	# Validate Cost
 	var cost = card.card_data.get("cost", 0)
+	print("[DEV] Validating cost. Plr Energy: %s, Card Cost: %s" % [state.player.energy, cost])
 	if state.player.energy < cost:
-		print("Not enough energy!")
+		print("[DEV] Rejecting play -> Not enough energy!")
 		card.reject_play()
 		return
 		
 	if state.player.field.size() >= 5:
-		print("Field is full!")
+		print("[DEV] Rejecting play -> Field is full!")
 		card.reject_play()
 		return
 
 	# Succeed!
+	print("[DEV] SUCCESS! Subtracted %s energy. Moving card to Field." % cost)
 	state.player.energy -= cost
 	if card in state.player.hand:
 		state.player.hand.erase(card)
@@ -211,6 +216,7 @@ func _layout_hand():
 
 func _on_card_attack_started(card: Node):
 	if state.active_p != 0: return
+	print("[DEV] Targeted Attack Initiated from %s!" % card.card_id)
 	targeting_card = card
 	if has_node("TargetArrow"): $TargetArrow.show()
 
@@ -222,6 +228,7 @@ func _process(_delta):
 func _input(event):
 	if targeting_card:
 		if event is InputEventMouseButton and not event.pressed and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
+			print("[DEV] Mouse released! Resolving attack at global position: %s" % event.global_position)
 			_resolve_attack(event.global_position)
 			targeting_card = null
 			if has_node("TargetArrow"): $TargetArrow.hide()
@@ -234,7 +241,7 @@ func _resolve_attack(pos: Vector2):
 			break
 			
 	if hit_card:
-		print("CLASH! ", targeting_card.card_data.name, " attacks ", hit_card.card_data.name)
+		print("[DEV] CLASH! [P] %s vs [E] %s" % [targeting_card.card_data.name, hit_card.card_data.name])
 		
 		var ap = targeting_card.card_data.power
 		var op = hit_card.card_data.power
@@ -245,23 +252,26 @@ func _resolve_attack(pos: Vector2):
 		targeting_card.load_card_data()
 		hit_card.load_card_data()
 		
+		print("[DEV] CLASH RESULT: Player card HP: %s, Enemy card HP: %s" % [targeting_card.card_data.health, hit_card.card_data.health])
+		
 		if "exhausted" in targeting_card.card_data:
 			targeting_card.card_data.exhausted = true
 		
 		if targeting_card.card_data.health <= 0:
+			print("[DEV] Player card DESTROYED!")
 			state.player.field.erase(targeting_card)
 			targeting_card.queue_free()
 		
 		if hit_card.card_data.health <= 0:
+			print("[DEV] Enemy card DESTROYED!")
 			state.opponent.field.erase(hit_card)
 			hit_card.queue_free()
 			
 		update_layout()
 		
 	elif has_node("UI/OpponentBlock") and $UI/OpponentBlock.get_global_rect().has_point(pos):
-		print("DIRECT ATTACK TO OPPONENT BLOCK!")
-		# TODO: remove UI block
+		print("[DEV] DIRECT ATTACK TO OPPONENT BLOCK!")
 		if "exhausted" in targeting_card.card_data:
 			targeting_card.card_data.exhausted = true
 	else:
-		print("Attack cancelled.")
+		print("[DEV] Attack completely cancelled. No valid target found at pos.")
