@@ -19,3 +19,6 @@ dist/
 # Build artifacts
 */Export/*
 Export/
+# secrets (portfolio-audit 2026-10-31)
+*.key
+*.pem
